@@ -53,7 +53,7 @@
   "user_access_interfaces": {
     "provider_api": {
       "access_method": "http",
-      "base_url": "${API_GATEWAY_BASE_URL}/p/aionlabs",
+      "base_url": "${API_GATEWAY_BASE_URL}/aionlabs",
       "routing_key": {
         "model": "aion-labs/aion-1.0"
       }
