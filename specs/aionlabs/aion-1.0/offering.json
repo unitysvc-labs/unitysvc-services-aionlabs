@@ -2,31 +2,30 @@
   "capabilities": [
     "llm"
   ],
-  "description": "Aion RP LLaMA 3.1 8B is a reasoning-optimized large language model released in July 2025. It is built on Meta's LLaMA 3.1 architecture and fine-tuned by Aion Labs for efficient text generation, structured reasoning, and lightweight deployment. Designed for research and production, it supports long-context understanding, coding assistance, and advanced conversation flows.",
+  "description": "Aion-1.0 is a reasoning-optimized large language model built on Meta's LLaMA 3.1 architecture and fine-tuned by Aion Labs. Released in July 2025, it offers efficient text generation, advanced structured reasoning, and robust coding assistance. Designed for both research and production, it supports long-context understanding and lightweight deployment.",
   "details": {
     "coding": "Strong performance on code completion and debugging tasks",
-    "context_length": 32768,
-    "context_window": "32768",
+    "context_length": 131072,
+    "context_window": "131072",
     "function_calling": "Supports API-based function calling for tool use",
-    "model_name": "aion-labs/aion-rp-llama-3.1-8b",
+    "model_name": "aion-labs/aion-1.0",
     "multimodal": "Not multimodal \u2014 optimized for text-only tasks",
-    "parameter_count": 8000000000,
+    "parameter_count": null,
     "reasoning": "Enhanced structured reasoning and step-by-step problem solving"
   },
-  "name": "aion-rp-llama-3.1-8b",
+  "name": "aion-1.0",
   "payout_price": {
     "description": "No platform commission",
     "percentage": "100.00",
     "type": "revenue_share"
   },
-  "schema": "offering_v1",
   "service_type": "llm",
   "status": "ready",
   "tags": [
     "ai",
     "gateway"
   ],
-  "time_created": "2025-07-15T00:00:00Z",
+  "time_created": "2025-08-21T00:00:00Z",
   "upstream_access_config": {
     "aion_labs_api": {
       "access_method": "http",
@@ -47,7 +46,7 @@
         }
       ],
       "routing_key": {
-        "model": "aion-labs/aion-rp-llama-3.1-8b"
+        "model": "aion-labs/aion-1.0"
       }
     }
   }
