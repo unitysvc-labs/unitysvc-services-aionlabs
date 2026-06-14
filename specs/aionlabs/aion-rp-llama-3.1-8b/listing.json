@@ -47,7 +47,6 @@
     "type": "one_million_tokens"
   },
   "name": "aionlabs/aion-rp-llama-3.1-8b",
-  "schema": "listing_v1",
   "status": "ready",
   "time_created": "2025-07-15T00:00:00Z",
   "user_access_interfaces": {
