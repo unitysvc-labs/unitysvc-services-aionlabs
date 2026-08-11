@@ -1,0 +1,51 @@
+{
+  "parameters": {
+    "api_base_url": "https://api.aionlabs.ai",
+    "capabilities": [
+      "llm"
+    ],
+    "description": "Aion 2.0 is a roleplay- and storytelling-optimized model from Aion Labs, tuned for immersive narratives with tension, conflict, and mature themes.\n\nA variant of DeepSeek V3.2 fine-tuned by Aion Labs (released December 2025), Aion 2.0 excels at introducing crises and conflict to make stories more engaging, and handles darker, mature themes with nuance. It is reasoning-capable with a 131K-token context and is served OpenAI-compatibly through the UnitySVC gateway, which relays your chat-completion requests to the AionLabs API and meters usage per token.\n\nCall it in either the OpenAI or Anthropic API style \u2014 the gateway auto-detects the dialect and translates as needed. Two channels share one endpoint: `managed` (pay per token using the platform's key, nothing to configure) and `byok` (bring your own AionLabs key and route free). See the code examples and \"How to use this model\" for setup.",
+    "details": {
+      "based_on": "DeepSeek V3.2",
+      "context_length": 131072,
+      "context_window": "131072",
+      "max_completion_tokens": 32768,
+      "model_name": "aion-labs/aion-2.0",
+      "multimodal": "Not multimodal \u2014 optimized for text-only tasks",
+      "parameter_count": null,
+      "reasoning": "Reasoning-capable; optimized for immersive roleplay and storytelling",
+      "strengths": "Narrative tension, conflict, and nuanced handling of mature themes"
+    },
+    "display_name": "AION 2.0",
+    "env_api_key_name": "AIONLABS_API_KEY",
+    "list_price": {
+      "description": "Pricing Per 1M Input/Output Tokens: $0.8/$1.6",
+      "input": "0.8",
+      "output": "1.6",
+      "type": "one_million_tokens"
+    },
+    "offering_name": "aion-2.0",
+    "payout_price": {
+      "description": "No platform commission",
+      "percentage": "100.00",
+      "type": "revenue_share"
+    },
+    "provider_display_name": "AionLabs",
+    "rate_limits": [
+      {
+        "description": "API request rate limit",
+        "limit": 15,
+        "unit": "requests",
+        "window": "minute"
+      },
+      {
+        "description": "Token consumption rate limit",
+        "limit": 50000,
+        "unit": "tokens",
+        "window": "minute"
+      }
+    ],
+    "service_type": "llm",
+    "status": "ready"
+  }
+}

@@ -1,0 +1,51 @@
+{
+  "parameters": {
+    "api_base_url": "https://api.aionlabs.ai",
+    "capabilities": [
+      "llm"
+    ],
+    "description": "Aion 3.0 Mini is a compact multi-model storytelling system from Aion Labs, bringing collaborative generation to a lighter, cheaper footprint.\n\nBuilt on the DeepSeek model family (released May 2026), Aion 3.0 Mini uses a collaborative generation process in which multiple specialized models contribute to each response for stronger narrative structure and a nuanced treatment of mature themes. It is reasoning-capable with a 131K-token context and is served OpenAI-compatibly through the UnitySVC gateway, which relays your chat-completion requests to the AionLabs API and meters usage per token.\n\nCall it in either the OpenAI or Anthropic API style \u2014 the gateway auto-detects the dialect and translates as needed. Two channels share one endpoint: `managed` (pay per token using the platform's key, nothing to configure) and `byok` (bring your own AionLabs key and route free). See the code examples and \"How to use this model\" for setup.",
+    "details": {
+      "based_on": "DeepSeek model family (multi-model collaborative generation)",
+      "context_length": 131072,
+      "context_window": "131072",
+      "max_completion_tokens": 32768,
+      "model_name": "aion-labs/aion-3.0-mini",
+      "multimodal": "Not multimodal \u2014 optimized for text-only tasks",
+      "parameter_count": null,
+      "reasoning": "Reasoning-capable; optimized for immersive roleplay and storytelling",
+      "strengths": "Narrative structure and nuanced handling of mature themes at a lighter footprint"
+    },
+    "display_name": "AION 3.0 Mini",
+    "env_api_key_name": "AIONLABS_API_KEY",
+    "list_price": {
+      "description": "Pricing Per 1M Input/Output Tokens: $0.7/$1.4",
+      "input": "0.7",
+      "output": "1.4",
+      "type": "one_million_tokens"
+    },
+    "offering_name": "aion-3.0-mini",
+    "payout_price": {
+      "description": "No platform commission",
+      "percentage": "100.00",
+      "type": "revenue_share"
+    },
+    "provider_display_name": "AionLabs",
+    "rate_limits": [
+      {
+        "description": "API request rate limit",
+        "limit": 15,
+        "unit": "requests",
+        "window": "minute"
+      },
+      {
+        "description": "Token consumption rate limit",
+        "limit": 50000,
+        "unit": "tokens",
+        "window": "minute"
+      }
+    ],
+    "service_type": "llm",
+    "status": "ready"
+  }
+}
