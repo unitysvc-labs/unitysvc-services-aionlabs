@@ -18,6 +18,6 @@ curl --fail-with-body -sS "{{ service_base_url }}/v1/messages" \
   -H "x-api-key: ${UNITYSVC_API_KEY}" \
   -H "anthropic-version: 2023-06-01" \
   -d '{"model":"{{ routing_key.model }}","max_tokens":64,"messages":[{"role":"user","content":"Say this is a test"}]}' \
-  | grep -q '"content"'
+  | grep -q '"stop_reason"'
 {% endif %}
 echo "ok"
