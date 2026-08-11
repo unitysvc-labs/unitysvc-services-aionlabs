@@ -4,19 +4,16 @@
     "capabilities": [
       "llm"
     ],
-    "description": "Aion 3.0 Mini is a compact multi-model storytelling system from Aion Labs, bringing collaborative generation to a lighter, cheaper footprint.\n\nBuilt on the DeepSeek model family (released May 2026), Aion 3.0 Mini uses a collaborative generation process in which multiple specialized models contribute to each response for stronger narrative structure and a nuanced treatment of mature themes. It is reasoning-capable with a 131K-token context and is served OpenAI-compatibly through the UnitySVC gateway, which relays your chat-completion requests to the AionLabs API and meters usage per token.\n\nCall it in either the OpenAI or Anthropic API style \u2014 the gateway auto-detects the dialect and translates as needed. Two channels share one endpoint: `managed` (pay per token using the platform's key, nothing to configure) and `byok` (bring your own AionLabs key and route free). See the code examples and \"How to use this model\" for setup.",
+    "description": "Aion 3.0 Mini is a large language model from AionLabs, available through the UnitySVC gateway.\n\nA multi-model system built on the DeepSeek family of models. Aion 3.0 Mini employs a collaborative generation process in which multiple specialized models contribute to each response. The result is stronger narrative structure, more compelling tension and conflict, and a nuanced treatment of mature and darker themes. It is served OpenAI-compatibly through the UnitySVC gateway, which relays your chat-completion requests to the AionLabs API and meters usage per token (context window 131072 tokens).\n\nCall it in either the OpenAI or Anthropic API style \u2014 the gateway auto-detects the dialect and translates as needed. Two channels share one endpoint: `managed` (pay per token using the platform's key, nothing to configure) and `byok` (bring your own AionLabs key and route free). See the code examples and \"How to use this model\" for setup.",
     "details": {
-      "based_on": "DeepSeek model family (multi-model collaborative generation)",
       "context_length": 131072,
-      "context_window": "131072",
       "max_completion_tokens": 32768,
+      "modality": "text->text",
       "model_name": "aion-labs/aion-3.0-mini",
-      "multimodal": "Not multimodal \u2014 optimized for text-only tasks",
       "parameter_count": null,
-      "reasoning": "Reasoning-capable; optimized for immersive roleplay and storytelling",
-      "strengths": "Narrative structure and nuanced handling of mature themes at a lighter footprint"
+      "reasoning": true
     },
-    "display_name": "AION 3.0 Mini",
+    "display_name": "Aion 3.0 Mini",
     "env_api_key_name": "AIONLABS_API_KEY",
     "list_price": {
       "description": "Pricing Per 1M Input/Output Tokens: $0.7/$1.4",

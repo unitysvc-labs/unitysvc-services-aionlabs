@@ -4,18 +4,16 @@
     "capabilities": [
       "llm"
     ],
-    "description": "Aion RP LLaMA 3.1 8B is a reasoning-optimized 8B model from Aion Labs, tuned for text generation, coding, and rich conversational flows.\n\nReleased in July 2025 and built on Meta's LLaMA 3.1 (8B parameters), it is fine-tuned by Aion Labs for structured reasoning, code assistance, function calling, and long-context understanding up to 32K tokens. It is served OpenAI-compatibly through the UnitySVC gateway, which relays your chat-completion requests to the AionLabs API and meters usage per token.\n\nCall it in either the OpenAI or Anthropic API style \u2014 the gateway auto-detects the dialect and translates as needed. Two channels share one endpoint: `managed` (pay per token using the platform's key, nothing to configure) and `byok` (bring your own AionLabs key and route free). See the code examples and \"How to use this model\" for setup.",
+    "description": "Aion-RP 1.0 (8B) is a large language model from AionLabs, available through the UnitySVC gateway.\n\nA variant of LLama 3.1 8B optimized for immersive roleplaying and storytelling. It is served OpenAI-compatibly through the UnitySVC gateway, which relays your chat-completion requests to the AionLabs API and meters usage per token (context window 32768 tokens).\n\nCall it in either the OpenAI or Anthropic API style \u2014 the gateway auto-detects the dialect and translates as needed. Two channels share one endpoint: `managed` (pay per token using the platform's key, nothing to configure) and `byok` (bring your own AionLabs key and route free). See the code examples and \"How to use this model\" for setup.",
     "details": {
-      "coding": "Strong performance on code completion and debugging tasks",
       "context_length": 32768,
-      "context_window": "32768",
-      "function_calling": "Supports API-based function calling for tool use",
+      "max_completion_tokens": 32768,
+      "modality": "text->text",
       "model_name": "aion-labs/aion-rp-llama-3.1-8b",
-      "multimodal": "Not multimodal \u2014 optimized for text-only tasks",
-      "parameter_count": 8000000000,
-      "reasoning": "Enhanced structured reasoning and step-by-step problem solving"
+      "parameter_count": null,
+      "reasoning": false
     },
-    "display_name": "AION RP LLaMA 3.1",
+    "display_name": "Aion-RP 1.0 (8B)",
     "env_api_key_name": "AIONLABS_API_KEY",
     "list_price": {
       "description": "Pricing Per 1M Input/Output Tokens: $0.8/$1.6",

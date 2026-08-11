@@ -4,24 +4,21 @@
     "capabilities": [
       "llm"
     ],
-    "description": "Aion 3.0 is Aion Labs' flagship multi-model storytelling system, delivering strong narrative structure and nuanced handling of mature themes.\n\nBuilt on the GLM model family (released May 2026), Aion 3.0 uses a collaborative generation process in which multiple specialized models contribute to each response, yielding more compelling tension and conflict and a nuanced treatment of darker themes. It is reasoning-capable with a 131K-token context and is served OpenAI-compatibly through the UnitySVC gateway, which relays your chat-completion requests to the AionLabs API and meters usage per token.\n\nCall it in either the OpenAI or Anthropic API style \u2014 the gateway auto-detects the dialect and translates as needed. Two channels share one endpoint: `managed` (pay per token using the platform's key, nothing to configure) and `byok` (bring your own AionLabs key and route free). See the code examples and \"How to use this model\" for setup.",
+    "description": "Aion 3.0 is a large language model from AionLabs, available through the UnitySVC gateway.\n\nA multi-model system built on the GLM family of models. Aion 3.0 employs a collaborative generation process in which multiple specialized models contribute to each response. The result is stronger narrative structure, more compelling tension and conflict, and a nuanced treatment of mature and darker themes. It is served OpenAI-compatibly through the UnitySVC gateway, which relays your chat-completion requests to the AionLabs API and meters usage per token (context window 131072 tokens).\n\nCall it in either the OpenAI or Anthropic API style \u2014 the gateway auto-detects the dialect and translates as needed. Two channels share one endpoint: `managed` (pay per token using the platform's key, nothing to configure) and `byok` (bring your own AionLabs key and route free). See the code examples and \"How to use this model\" for setup.",
     "details": {
-      "based_on": "GLM model family (multi-model collaborative generation)",
       "context_length": 131072,
-      "context_window": "131072",
       "max_completion_tokens": 32768,
+      "modality": "text->text",
       "model_name": "aion-labs/aion-3.0",
-      "multimodal": "Not multimodal \u2014 optimized for text-only tasks",
       "parameter_count": null,
-      "reasoning": "Reasoning-capable; optimized for immersive roleplay and storytelling",
-      "strengths": "Narrative structure, tension, conflict, and nuanced handling of mature themes"
+      "reasoning": true
     },
-    "display_name": "AION 3.0",
+    "display_name": "Aion 3.0",
     "env_api_key_name": "AIONLABS_API_KEY",
     "list_price": {
-      "description": "Pricing Per 1M Input/Output Tokens: $3.0/$6.0",
-      "input": "3.0",
-      "output": "6.0",
+      "description": "Pricing Per 1M Input/Output Tokens: $3/$6",
+      "input": "3",
+      "output": "6",
       "type": "one_million_tokens"
     },
     "offering_name": "aion-3.0",
