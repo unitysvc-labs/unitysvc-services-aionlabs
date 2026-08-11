@@ -1,0 +1,46 @@
+{
+  "name": "{{ offering_name }}",
+  "display_name": "{{ display_name }}",
+  "description": {{ description | tojson }},
+  "service_type": "{{ service_type | default('llm') }}",
+  "capabilities": {{ capabilities | default(['llm']) | tojson }},
+  "status": "{{ status | default('ready') }}",
+  "currency": "USD",
+  "tags": ["ai", "gateway", "byok", "managed"],
+{#- Formats are a service-level fact, identical for every AionLabs model: an
+    OpenAI-compatible upstream, exposed in both dialects via the llm_translator
+    below (callers may send OpenAI or Anthropic; responses come back in kind).
+    Merge them into the per-model details rather than repeating in every param. -#}
+{%- set _details = details.copy() %}
+{%- set _ = _details.update({"input_formats": ["openai", "anthropic"], "output_formats": ["openai_response", "anthropic_response"]}) %}
+  "details": {{ _details | tojson }},
+{%- if payout_price %}
+  "payout_price": {{ payout_price | tojson }},
+{%- endif %}
+{#- AionLabs resells its own tokens, so both channels front the same upstream and
+    differ only in whose key pays: managed = seller key (${ secrets.* }),
+    byok = customer key (${ customer_secrets.* }). Channel TYPE is derived from
+    that alone (no flag). llm_translator lets an OpenAI upstream also serve
+    Anthropic-style callers; the gateway auto-detects and only translates when
+    the incoming dialect differs. -#}
+  "upstream_access_config": {
+    "managed": {
+      "access_method": "http",
+      "api_key": "${ secrets.{{ env_api_key_name }} }",
+      "base_url": "{{ api_base_url }}",
+      "rate_limits": {{ rate_limits | default([]) | tojson }},
+      "routing_key": {"model": "{{ details.model_name }}"},
+      "request_transformer": {"llm_translator": "anthropic_to_openai"},
+      "sort_order": 1
+    },
+    "byok": {
+      "access_method": "http",
+      "api_key": "${ customer_secrets.{{ env_api_key_name }} }",
+      "base_url": "{{ api_base_url }}",
+      "rate_limits": {{ rate_limits | default([]) | tojson }},
+      "routing_key": {"model": "{{ details.model_name }}"},
+      "request_transformer": {"llm_translator": "anthropic_to_openai"},
+      "sort_order": 2
+    }
+  }
+}

@@ -1,0 +1,82 @@
+{
+  "status": "{{ status | default('ready') }}",
+  "currency": "USD",
+  {#- name = <provider>/<bare> per the platform service-naming convention
+      (unitysvc #1196 / #1138). provider_name is injected from provider.json. #}
+  "name": "{{ provider_name }}/{{ offering_name }}",
+  {#- Channel-keyed price: byok is free (the customer's own key pays AionLabs
+      directly); managed resells AionLabs tokens at the per-model rate carried in
+      the param `list_price`. Channel keys MUST match the offering channels. #}
+  "list_price": {
+    "type": "channel",
+    "default": "managed",
+    "channels": {
+      "byok": {
+        "description": "Free — bring your own {{ provider_display_name }} API key; you pay {{ provider_display_name }} directly for tokens",
+        "price": "0",
+        "type": "constant"
+      },
+      "managed": {{ list_price | tojson }}
+    }
+  },
+  "user_access_interfaces": {
+    "provider_api": {
+      "access_method": "http",
+      "base_url": "${API_GATEWAY_BASE_URL}/{{ provider_name }}",
+      "routing_key": {"model": "{{ details.model_name }}"}
+    }
+  },
+  "documents": {
+    "Aion Labs API docs": {
+      "category": "api_reference",
+      "external_url": "https://www.aionlabs.ai/api/docs/",
+      "is_active": true,
+      "is_public": true,
+      "mime_type": "url"
+    },
+    "Aion Labs documentation": {
+      "category": "api_reference",
+      "external_url": "https://www.aionlabs.ai/documentation/",
+      "is_active": true,
+      "is_public": true,
+      "mime_type": "url"
+    },
+    "How to use this model": {
+      "$doc_preset": "llm_description"
+    },
+    "Connectivity test": {
+      "$doc_preset": "llm_connectivity"
+    },
+    "Default request body": {
+      "$doc_preset": "llm_request_template"
+    },
+    "Python code example (OpenAI SDK)": {
+      "$doc_preset": "llm_code_example_openai"
+    },
+    "JavaScript code example": {
+      "$doc_preset": "llm_code_example_javascript"
+    },
+    "cURL code example": {
+      "$doc_preset": "llm_code_example_shell"
+    },
+    "Python function calling code example": {
+      "$doc_preset": "llm_code_example_fc_requests"
+    },
+    {#- Anthropic-dialect examples exercise the llm_translator, which lives at
+        the gateway; specs run-tests hits the OpenAI upstream directly (no
+        translator), so their automated probe is skipped. They remain valid,
+        published examples and are covered by the gateway's translator e2e. -#}
+    "Python code example (Anthropic style)": {
+      "$doc_preset": {
+        "name": "llm_code_example_anthropic_to_openai_requests",
+        "meta": {"test": {"status": "skip"}}
+      }
+    },
+    "cURL code example (Anthropic style)": {
+      "$doc_preset": {
+        "name": "llm_code_example_anthropic_to_openai_shell",
+        "meta": {"test": {"status": "skip"}}
+      }
+    }
+  }
+}

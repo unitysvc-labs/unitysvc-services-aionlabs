@@ -7,11 +7,6 @@ on:
     paths:
       - "specs/**"
       - ".github/workflows/validate-data.yml"
-  pull_request_target:
-    types: [opened, synchronize, reopened]
-    paths:
-      - "specs/**"
-      - ".github/workflows/validate-data.yml"
   push:
     branches: [main]
     paths:

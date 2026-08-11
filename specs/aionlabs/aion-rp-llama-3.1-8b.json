@@ -1,0 +1,48 @@
+{
+  "parameters": {
+    "api_base_url": "https://api.aionlabs.ai",
+    "capabilities": [
+      "llm"
+    ],
+    "description": "Aion-RP 1.0 (8B) is a large language model from AionLabs, available through the UnitySVC gateway.\n\nA variant of LLama 3.1 8B optimized for immersive roleplaying and storytelling. It is served OpenAI-compatibly through the UnitySVC gateway, which relays your chat-completion requests to the AionLabs API and meters usage per token (context window 32768 tokens).\n\nCall it in either the OpenAI or Anthropic API style \u2014 the gateway auto-detects the dialect and translates as needed. Two channels share one endpoint: `managed` (pay per token using the platform's key, nothing to configure) and `byok` (bring your own AionLabs key and route free). See the code examples and \"How to use this model\" for setup.",
+    "details": {
+      "context_length": 32768,
+      "max_completion_tokens": 32768,
+      "modality": "text->text",
+      "model_name": "aion-labs/aion-rp-llama-3.1-8b",
+      "parameter_count": null,
+      "reasoning": false
+    },
+    "display_name": "Aion-RP 1.0 (8B)",
+    "env_api_key_name": "AIONLABS_API_KEY",
+    "list_price": {
+      "description": "Pricing Per 1M Input/Output Tokens: $0.8/$1.6",
+      "input": "0.8",
+      "output": "1.6",
+      "type": "one_million_tokens"
+    },
+    "offering_name": "aion-rp-llama-3.1-8b",
+    "payout_price": {
+      "description": "No platform commission",
+      "percentage": "100.00",
+      "type": "revenue_share"
+    },
+    "provider_display_name": "AionLabs",
+    "rate_limits": [
+      {
+        "description": "API request rate limit",
+        "limit": 15,
+        "unit": "requests",
+        "window": "minute"
+      },
+      {
+        "description": "Token consumption rate limit",
+        "limit": 50000,
+        "unit": "tokens",
+        "window": "minute"
+      }
+    ],
+    "service_type": "llm",
+    "status": "ready"
+  }
+}
