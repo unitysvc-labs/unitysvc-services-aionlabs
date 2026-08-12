@@ -110,7 +110,17 @@ def iter_models(api_key: str) -> Iterator[dict]:
             "which relays your chat-completion requests to the AionLabs API and meters usage "
             f"per token (context window {context_length} tokens)."
         ).strip()
-        description = f"{brief}\n\n{detail}\n\n{_HOWTO}"
+        # Closing pricing paragraph. This service is MULTI-CHANNEL, so unlike a
+        # BYOK-only service it has to explain both channels: `managed` is metered
+        # by UnitySVC at the per-token rate below, while `byok` is free through
+        # the gateway because the customer's own key pays AionLabs directly.
+        pricing_para = (
+            "Pricing — two channels: `managed` bills through UnitySVC at "
+            f"${_fmt_price(prompt)} / ${_fmt_price(completion)} per 1M input/output tokens, "
+            "while `byok` is free through the UnitySVC gateway (your own AionLabs key "
+            "pays AionLabs directly)."
+        )
+        description = f"{brief}\n\n{detail}\n\n{_HOWTO}\n\n{pricing_para}"
 
         yield {
             # Path / identity (stripped from the written parameters).
