@@ -40,11 +40,22 @@ RATE_LIMITS = [
 # Standard "how to use" paragraph — identical for every model (both channels
 # share one endpoint; the llm_translator serves both API dialects).
 _HOWTO = (
-    "Call it in either the OpenAI or Anthropic API style — the gateway auto-detects "
-    "the dialect and translates as needed. Two channels share one endpoint: `managed` "
-    "(pay per token using the platform's key, nothing to configure) and `byok` (bring "
-    'your own AionLabs key and route free). See the code examples and "How to use this '
-    'model" for setup.'
+    "Two channels share one endpoint: `managed` (pay per token using the platform's "
+    "key, nothing to configure) and `byok` (bring your own AionLabs key and route "
+    'free). See the code examples and "How to use this model" for setup.'
+)
+
+# Dedicated interoperability paragraph — the dual-dialect endpoint is the platform
+# differentiator and what makes services interchangeable enough to sit behind the
+# gateway's composition primitives. Identical for every model.
+_INTEROP = (
+    "One endpoint, either dialect — send an OpenAI Chat Completions or an Anthropic "
+    "Messages request and the gateway auto-detects the format, translates it for the "
+    "upstream, and replies in the style you sent. Because every model on UnitySVC "
+    "speaks both dialects, they are interchangeable behind a single client: swap "
+    "providers without touching your code, and combine them with the gateway "
+    "composition primitives — group (/g/), broadcast (/b/), chain (/c/) and "
+    "failover (/f/)."
 )
 
 SCRIPT_DIR = Path(__file__).parent
@@ -104,7 +115,12 @@ def iter_models(api_key: str) -> Iterator[dict]:
 
         display_name = _clean_name(m.get("name", ""), offering_name)
         upstream_desc = (m.get("description") or "").strip()
-        brief = f"{display_name} is a large language model from AionLabs, available through the UnitySVC gateway."
+        # Teaser: the only paragraph shown in the collapsed marketplace list view,
+        # so it carries the dual-dialect differentiator (must stay under 200 chars).
+        brief = (
+            f"{display_name} — an AionLabs large language model, callable in both "
+            "OpenAI and Anthropic API styles through the UnitySVC gateway."
+        )
         detail = (
             f"{upstream_desc} It is served OpenAI-compatibly through the UnitySVC gateway, "
             "which relays your chat-completion requests to the AionLabs API and meters usage "
@@ -120,7 +136,7 @@ def iter_models(api_key: str) -> Iterator[dict]:
             "while `byok` is free through the UnitySVC gateway (your own AionLabs key "
             "pays AionLabs directly)."
         )
-        description = f"{brief}\n\n{detail}\n\n{_HOWTO}\n\n{pricing_para}"
+        description = f"{brief}\n\n{detail}\n\n{_HOWTO}\n\n{_INTEROP}\n\n{pricing_para}"
 
         yield {
             # Path / identity (stripped from the written parameters).
