@@ -1,7 +1,14 @@
 {
   "name": "{{ offering_name }}",
   "display_name": "{{ display_name }}",
-  "description": {{ description | tojson }},
+{#- summary = marketplace teaser (<=200 chars, required by unitysvc#1838):
+    first paragraph of the param description. description keeps the remaining
+    paragraphs; a single-paragraph description is left unchanged. -#}
+{%- set _paras = (description or (display_name ~ ', served through the UnitySVC gateway.')).split('\n\n') %}
+{%- set _summary = (_paras[0] | trim)[:200] %}
+{%- set _description = (_paras[1:] | join('\n\n')) if _paras | length > 1 else _paras[0] %}
+  "summary": {{ _summary | tojson }},
+  "description": {{ _description | tojson }},
   "service_type": "{{ service_type | default('llm') }}",
   "capabilities": {{ capabilities | default(['llm']) | tojson }},
   "status": "{{ status | default('ready') }}",
