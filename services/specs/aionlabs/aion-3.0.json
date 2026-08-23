@@ -16,16 +16,28 @@
     "display_name": "Aion 3.0",
     "env_api_key_name": "AIONLABS_API_KEY",
     "list_price": {
-      "description": "Pricing Per 1M Input/Output Tokens: $3/$6",
-      "input": "3",
-      "output": "6",
+      "description": "$3.45/$6.9 / 1M input/output tokens",
+      "input": "3.45",
+      "output": "6.9",
       "type": "one_million_tokens"
     },
     "offering_name": "aion-3.0",
     "payout_price": {
-      "description": "No platform commission",
-      "percentage": "100.00",
-      "type": "revenue_share"
+      "channels": {
+        "byok": {
+          "description": "No payout - the customer's own key pays AionLabs",
+          "price": "0",
+          "type": "constant"
+        },
+        "managed": {
+          "description": "Upstream AionLabs rate",
+          "input": "3",
+          "output": "6",
+          "type": "one_million_tokens"
+        }
+      },
+      "default": "managed",
+      "type": "channel"
     },
     "provider_display_name": "AionLabs",
     "rate_limits": [

@@ -45,12 +45,18 @@
       workflow (.github/workflows/populate-services.yml) rewrites them and
       would drop a hand-edited description. `payout_price` is seller-facing
       (revenue_share, "No platform commission") and is deliberately untouched. #}
-{%- set _byok_note = ' Free on the byok channel - bring your own ' ~ provider_display_name ~ ' key and pay ' ~ provider_display_name ~ ' directly.' %}
+{#- The cell spans BOTH channels, so it leads with the range "Free - $x/$y"
+    rather than picking one. Rates are joined with "/" and NO surrounding
+    spaces: the parser's amount/unit separator requires whitespace on both
+    sides, so " / " before the unit stays the only split point. Written as
+    "$0.92 / $1.84" it would split at the first slash and reject the tail for
+    carrying a currency symbol, collapsing onto one unstyled line. #}
+{%- set _byok_note = ' | Free on the byok channel - your own key pays ' ~ provider_display_name ~ ' directly. The managed channel bills UnitySVC at the listed rate.' %}
 {%- if list_price.input and list_price.output %}
-{%- set _cell = '$' ~ list_price.input ~ ' / 1M input tokens | $' ~ list_price.output ~ ' / 1M output tokens.' ~ _byok_note %}
-{%- set _managed = '$' ~ list_price.input ~ ' per 1M input tokens, $' ~ list_price.output ~ ' per 1M output tokens' %}
+{%- set _cell = 'Free - $' ~ list_price.input ~ '/$' ~ list_price.output ~ ' / 1M input/output tokens' ~ _byok_note %}
+{%- set _managed = '$' ~ list_price.input ~ '/$' ~ list_price.output ~ ' / 1M input/output tokens' %}
 {%- elif list_price.price %}
-{%- set _cell = '$' ~ list_price.price ~ ' / 1M tokens |' ~ _byok_note %}
+{%- set _cell = 'Free - $' ~ list_price.price ~ ' / 1M tokens' ~ _byok_note %}
 {%- set _managed = '$' ~ list_price.price ~ ' per 1M tokens' %}
 {%- endif %}
   "list_price": {

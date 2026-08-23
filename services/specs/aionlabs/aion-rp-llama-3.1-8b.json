@@ -16,16 +16,28 @@
     "display_name": "Aion-RP 1.0 (8B)",
     "env_api_key_name": "AIONLABS_API_KEY",
     "list_price": {
-      "description": "Pricing Per 1M Input/Output Tokens: $0.8/$1.6",
-      "input": "0.8",
-      "output": "1.6",
+      "description": "$0.92/$1.84 / 1M input/output tokens",
+      "input": "0.92",
+      "output": "1.84",
       "type": "one_million_tokens"
     },
     "offering_name": "aion-rp-llama-3.1-8b",
     "payout_price": {
-      "description": "No platform commission",
-      "percentage": "100.00",
-      "type": "revenue_share"
+      "channels": {
+        "byok": {
+          "description": "No payout - the customer's own key pays AionLabs",
+          "price": "0",
+          "type": "constant"
+        },
+        "managed": {
+          "description": "Upstream AionLabs rate",
+          "input": "0.8",
+          "output": "1.6",
+          "type": "one_million_tokens"
+        }
+      },
+      "default": "managed",
+      "type": "channel"
     },
     "provider_display_name": "AionLabs",
     "rate_limits": [

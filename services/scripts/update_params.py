@@ -16,6 +16,7 @@ Usage: python scripts/update_params.py
 """
 
 import os
+from decimal import Decimal, ROUND_HALF_UP
 import sys
 from pathlib import Path
 from typing import Iterator
@@ -30,6 +31,20 @@ PROVIDER_DISPLAY_NAME = "AionLabs"
 API_BASE_URL = "https://api.aionlabs.ai"
 ENV_API_KEY_NAME = "AIONLABS_API_KEY"
 MODELS_URL = f"{API_BASE_URL}/v1/models"
+
+# What the platform adds on top of the upstream rate for the MANAGED channel,
+# where UnitySVC's key pays AionLabs and the customer pays UnitySVC. The byok
+# channel is unaffected — the customer's key pays AionLabs directly, so there is
+# nothing to mark up and nothing to pay out.
+#
+# The seller's own list price, computed here at populate time rather than by the
+# platform, so the stored rate is exactly the rate billed.
+PLATFORM_MARKUP = Decimal("1.15")
+
+# 3dp: measured across this catalog's rates it keeps the effective markup inside
+# 15.0-15.7%, where 2dp would swing a cheap model as wide as 25%. `_fmt_price`
+# drops trailing zeros, so a rate that needs no third decimal never shows one.
+PRICE_PLACES = Decimal("0.001")
 
 # Provider-wide rate limits (AionLabs applies these per account).
 RATE_LIMITS = [
@@ -83,13 +98,29 @@ def iter_models(api_key: str) -> Iterator[dict]:
             continue
 
         pricing = m.get("pricing") or {}
-        prompt = float(pricing.get("prompt", 0) or 0) * 1_000_000
-        completion = float(pricing.get("completion", 0) or 0) * 1_000_000
+        # AionLabs quotes per TOKEN, so the x1e6 is the unit conversion, not a
+        # markup. Keep it in Decimal from here on: the float path produced rates
+        # like 0.09999999999999999 in a sibling catalog.
+        up_in = (Decimal(str(pricing.get("prompt", 0) or 0)) * 1_000_000)
+        up_out = (Decimal(str(pricing.get("completion", 0) or 0)) * 1_000_000)
+        mk_in = (up_in * PLATFORM_MARKUP).quantize(PRICE_PLACES, rounding=ROUND_HALF_UP)
+        mk_out = (up_out * PLATFORM_MARKUP).quantize(PRICE_PLACES, rounding=ROUND_HALF_UP)
+
+        # What the CUSTOMER pays on the managed channel: upstream + markup.
         list_price = {
             "type": "one_million_tokens",
-            "input": _fmt_price(prompt),
-            "output": _fmt_price(completion),
-            "description": f"Pricing Per 1M Input/Output Tokens: ${_fmt_price(prompt)}/${_fmt_price(completion)}",
+            "input": _fmt_price(mk_in),
+            "output": _fmt_price(mk_out),
+            "description": f"${_fmt_price(mk_in)}/${_fmt_price(mk_out)} / 1M input/output tokens",
+        }
+        # What the PLATFORM owes the SELLER on the managed channel: the upstream
+        # rate, unmarked. Absolute rather than a share of the list price, so it
+        # does not follow the markup, a listing override, or a promotion — none
+        # of which change what AionLabs billed (unitysvc/unitysvc#1892).
+        upstream_price = {
+            "type": "one_million_tokens",
+            "input": _fmt_price(up_in),
+            "output": _fmt_price(up_out),
         }
 
         context_length = m.get("context_length")
@@ -134,10 +165,30 @@ def iter_models(api_key: str) -> Iterator[dict]:
             "capabilities": ["llm"],
             "status": "ready",
             "details": details,
+            # Channel-keyed: the two channels owe the seller different amounts.
+            # A flat 100% revenue_share paid out everything the customer paid —
+            # which, now that the list price carries a markup, would hand the
+            # seller the markup too.
+            #
+            # NOTE: `calculate_seller_payout` does not thread the resolved
+            # channel into `calculate_cost`, so this resolves to `default` for
+            # every request (#1892 Phase 1). Correct in THIS shape only because
+            # `default` is the paid channel and byok rows are dropped earlier by
+            # the `seller_charge == 0` guard.
             "payout_price": {
-                "type": "revenue_share",
-                "percentage": "100.00",
-                "description": "No platform commission",
+                "type": "channel",
+                "default": "managed",
+                "channels": {
+                    "byok": {
+                        "type": "constant",
+                        "price": "0",
+                        "description": f"No payout - the customer's own key pays {PROVIDER_DISPLAY_NAME}",
+                    },
+                    "managed": dict(
+                        upstream_price,
+                        description=f"Upstream {PROVIDER_DISPLAY_NAME} rate",
+                    ),
+                },
             },
             "rate_limits": RATE_LIMITS,
             # Listing / channel fields
