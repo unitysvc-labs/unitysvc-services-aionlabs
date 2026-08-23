@@ -6,17 +6,66 @@
   "name": "{{ provider_name }}/{{ offering_name }}",
   {#- Channel-keyed price: byok is free (the customer's own key pays AionLabs
       directly); managed resells AionLabs tokens at the per-model rate carried in
-      the param `list_price`. Channel keys MUST match the offering channels. #}
+      the param `list_price`. Channel keys MUST match the offering channels.
+
+      Price-cell copy follows the marketplace description grammar
+      (unitysvc/unitysvc#1886, PR #1887):
+
+          <amount> [ ("/"|"per") <unit> ] [ "~"[intent] <badge> ]* [ "|" <note> ]
+
+      The description that matters is the one on the CHANNEL price, not the
+      sub-channel ones. CatalogServiceRow hands the whole `list_price` to
+      PriceTag, and PriceTag is the only component that parses a description;
+      the sub-channel prices reach ChannelDisplay's PriceBadge, which prints
+      whatever it is given verbatim. A channel-keyed price carrying neither a
+      top-level `description` nor a top-level `price` falls through PriceTag's
+      structured branch to `isFree`, so all four models here render a green
+      "Free" today even though the default channel is metered.
+
+      "Pricing Per 1M Input/Output Tokens: $0.8/$1.6" is a rate card, and the
+      grammar refuses to split two prices on purpose — it fails the unit test
+      (currency in the tail) and falls through as ONE long unstyled amount. So
+      the cell leads with the input rate, names "1M input tokens" as its unit
+      so the figure can't be misread as covering both directions, and puts the
+      output rate in the `|` note, which is terminal and taken verbatim.
+
+      NO BYOK BADGE, deliberately, and this catalog is the clearest case for
+      why: these services are available BOTH metered (managed, the default) and
+      BYOK. The amount rendered beside any badge here is the managed rate, so a
+      bare `~` badge — the green "this is a saving" register — would claim a
+      discount on a number the customer pays in full. `~info BYOK` would be
+      merely redundant rather than wrong, but the row already carries a byok
+      access-method chip (AccessMethodBadges renders one per channel type,
+      filterable and with its own lock glyph), so the affordance is already
+      stated where it belongs. A BYOK pill belongs on a price cell whose amount
+      really is Free — a BYOK-only catalog like unitysvc-services-deepseek —
+      not on a metered one. The byok option goes in the `|` note instead.
+
+      Composed here rather than in the param files because the populate
+      workflow (.github/workflows/populate-services.yml) rewrites them and
+      would drop a hand-edited description. `payout_price` is seller-facing
+      (revenue_share, "No platform commission") and is deliberately untouched. #}
+{%- set _byok_note = ' Free on the byok channel - bring your own ' ~ provider_display_name ~ ' key and pay ' ~ provider_display_name ~ ' directly.' %}
+{%- if list_price.input and list_price.output %}
+{%- set _cell = '$' ~ list_price.input ~ ' / 1M input tokens | $' ~ list_price.output ~ ' / 1M output tokens.' ~ _byok_note %}
+{%- set _managed = '$' ~ list_price.input ~ ' per 1M input tokens, $' ~ list_price.output ~ ' per 1M output tokens' %}
+{%- elif list_price.price %}
+{%- set _cell = '$' ~ list_price.price ~ ' / 1M tokens |' ~ _byok_note %}
+{%- set _managed = '$' ~ list_price.price ~ ' per 1M tokens' %}
+{%- endif %}
   "list_price": {
     "type": "channel",
     "default": "managed",
+{%- if _cell %}
+    "description": {{ _cell | tojson }},
+{%- endif %}
     "channels": {
       "byok": {
         "description": "Free — bring your own {{ provider_display_name }} API key; you pay {{ provider_display_name }} directly for tokens",
         "price": "0",
         "type": "constant"
       },
-      "managed": {{ list_price | tojson }}
+      "managed": {{ dict(list_price, description=_managed) | tojson if _managed else list_price | tojson }}
     }
   },
   "user_access_interfaces": {
