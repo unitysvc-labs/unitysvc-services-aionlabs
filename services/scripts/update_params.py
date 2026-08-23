@@ -162,7 +162,7 @@ def iter_models(api_key: str) -> Iterator[dict]:
             "display_name": display_name,
             "description": description,
             "service_type": "llm",
-            "capabilities": ["llm"],
+            "capabilities": ["chat"],
             "status": "ready",
             "details": details,
             # Channel-keyed: the two channels owe the seller different amounts.
