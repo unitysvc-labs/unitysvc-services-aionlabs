@@ -4,6 +4,21 @@
   "homepage": "https://www.aionlabs.ai/",
   "logo": "https://aionlabs.com/wp-content/uploads/2024/01/logo-orange.svg",
   "name": "aionlabs",
+  "rate_limits": [
+    {
+      "description": "Self-imposed ceiling so platform test sweeps cannot saturate the account; not a published provider limit.",
+      "limit": 10,
+      "name": "aionlabs_concurrency",
+      "unit": "concurrent"
+    },
+    {
+      "description": "Self-imposed ceiling so platform test sweeps cannot saturate the account; not a published provider limit.",
+      "limit": 100,
+      "name": "aionlabs_rpm",
+      "unit": "requests",
+      "window": "minute"
+    }
+  ],
   "status": "ready",
   "terms_of_service": "https://www.aionlabs.ai/terms/",
   "time_created": "2025-07-15T00:00:00Z"
