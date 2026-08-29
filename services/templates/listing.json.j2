@@ -1,9 +1,13 @@
 {
   "status": "{{ status | default('ready') }}",
   "currency": "USD",
-  {#- name = <provider>/<bare> per the platform service-naming convention
-      (unitysvc #1196 / #1138). provider_name is injected from provider.json. #}
-  "name": "{{ provider_name }}/{{ offering_name }}",
+  {#- The service's own name, injected from its path under specs/ — the one
+      place it is defined (unitysvc-sellers 0.3.1). Do NOT rebuild it from
+      provider_name + offering_name: two sources for one identity drift, and
+      deprecation now matches committed services BY this name. Shape stays
+      <provider>/<bare> per the platform naming convention (unitysvc #1196 /
+      #1138). #}
+  "name": "{{ service_name }}",
   {#- Channel-keyed price: byok is free (the customer's own key pays AionLabs
       directly); managed resells AionLabs tokens at the per-model rate carried in
       the param `list_price`. Channel keys MUST match the offering channels.

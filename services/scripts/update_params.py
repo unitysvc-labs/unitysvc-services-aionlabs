@@ -83,6 +83,13 @@ def iter_models(api_key: str) -> Iterator[dict]:
     r.raise_for_status()
     models = r.json().get("models", [])
     print(f"Found {len(models)} models\n")
+    # An empty enumeration is an upstream/credential failure, not an emptied
+    # catalog. Absence now RETIRES a service (``deprecate_missing``), so
+    # returning quietly here would either deprecate everything or write nothing
+    # at all — indistinguishable from "no changes today". Fail the run instead.
+    if not models:
+        print(f"Error: {PROVIDER_DISPLAY_NAME} returned no models")
+        sys.exit(1)
 
     for i, m in enumerate(models, 1):
         model_id = m.get("id", "")
@@ -147,7 +154,7 @@ def iter_models(api_key: str) -> Iterator[dict]:
         # the gateway because the customer's own key pays AionLabs directly.
         pricing_para = (
             "Pricing — two channels: `managed` bills through UnitySVC at "
-            f"${_fmt_price(prompt)} / ${_fmt_price(completion)} per 1M input/output tokens, "
+            f"${_fmt_price(mk_in)} / ${_fmt_price(mk_out)} per 1M input/output tokens, "
             "while `byok` is free through the UnitySVC gateway (your own AionLabs key "
             "pays AionLabs directly)."
         )
@@ -155,7 +162,7 @@ def iter_models(api_key: str) -> Iterator[dict]:
 
         yield {
             # Path / identity (stripped from the written parameters).
-            "name": f"{PROVIDER_NAME}/{offering_name}",
+            "service_name": f"{PROVIDER_NAME}/{offering_name}",
             "provider_name": PROVIDER_NAME,
             # Offering fields
             "offering_name": offering_name,
@@ -206,11 +213,19 @@ def main() -> None:
         print(f"Error: {ENV_API_KEY_NAME} not set")
         sys.exit(1)
 
+    # ``deprecate_missing`` defaults to True and is left on: this script
+    # enumerates the WHOLE upstream catalog on every run (no --limit), and the
+    # only skips are deterministic reads of the catalog itself, not failures —
+    # a blank id, and an ``expires_at`` model, which AionLabs has itself marked
+    # for retirement and which SHOULD therefore be deprecated here if it is
+    # already committed. Every path that could shorten the list by accident
+    # (a non-2xx from /v1/models, an empty catalog) exits non-zero instead.
     stats = write_params_from_iterator(
         iterator=iter_models(api_key),
         output_dir=SCRIPT_DIR.parent / "specs",
     )
     print(f"\nDone: {stats}")
+    print(f"New: {stats['new']}, deprecated: {stats['deprecated']}")
 
 
 if __name__ == "__main__":
