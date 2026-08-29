@@ -4,7 +4,7 @@
     "capabilities": [
       "chat"
     ],
-    "description": "Aion 3.0 is a large language model from AionLabs, available through the UnitySVC gateway.\n\nA multi-model system built on the GLM family of models. Aion 3.0 employs a collaborative generation process in which multiple specialized models contribute to each response. The result is stronger narrative structure, more compelling tension and conflict, and a nuanced treatment of mature and darker themes. It is served OpenAI-compatibly through the UnitySVC gateway, which relays your chat-completion requests to the AionLabs API and meters usage per token (context window 131072 tokens).\n\nCall it in either the OpenAI or Anthropic API style — the gateway auto-detects the dialect and translates as needed. Two channels share one endpoint: `managed` (pay per token using the platform's key, nothing to configure) and `byok` (bring your own AionLabs key and route free). See the code examples and \"How to use this model\" for setup.\n\nPricing — two channels: `managed` bills through UnitySVC at $3 / $6 per 1M input/output tokens, while `byok` is free through the UnitySVC gateway (your own AionLabs key pays AionLabs directly).",
+    "description": "Aion 3.0 is a large language model from AionLabs, available through the UnitySVC gateway.\n\nA multi-model system built on the GLM family of models. Aion 3.0 employs a collaborative generation process in which multiple specialized models contribute to each response. The result is stronger narrative structure, more compelling tension and conflict, and a nuanced treatment of mature and darker themes. It is served OpenAI-compatibly through the UnitySVC gateway, which relays your chat-completion requests to the AionLabs API and meters usage per token (context window 131072 tokens).\n\nCall it in either the OpenAI or Anthropic API style — the gateway auto-detects the dialect and translates as needed. Two channels share one endpoint: `managed` (pay per token using the platform's key, nothing to configure) and `byok` (bring your own AionLabs key and route free). See the code examples and \"How to use this model\" for setup.\n\nPricing — two channels: `managed` bills through UnitySVC at $3.4500 / $6.9000 per 1M input/output tokens, while `byok` is free through the UnitySVC gateway (your own AionLabs key pays AionLabs directly).",
     "details": {
       "context_length": 131072,
       "max_completion_tokens": 32768,
@@ -16,9 +16,9 @@
     "display_name": "Aion 3.0",
     "env_api_key_name": "AIONLABS_API_KEY",
     "list_price": {
-      "description": "$3.45/$6.9 / 1M input/output tokens",
-      "input": "3.45",
-      "output": "6.9",
+      "description": "$3.4500/$6.9000 / 1M input/output tokens",
+      "input": "3.4500",
+      "output": "6.9000",
       "type": "one_million_tokens"
     },
     "offering_name": "aion-3.0",
