@@ -23,7 +23,30 @@
   "capabilities": {{ capabilities | default(['chat']) | tojson }},
   "status": "{{ status | default('ready') }}",
   "currency": "USD",
-  "tags": ["ai", "gateway", "byok", "managed"],
+{#- No `tags` key. unitysvc#1962 closes the tag vocabulary (docs/tags.yml) and
+    ingest now REJECTS anything outside it, which retires all four values this
+    template used to declare: `ai` restated service_type, `gateway` restated
+    gateway_type (DERIVED so it cannot drift), and `byok`/`managed` restated
+    the enrollment channels the gateway actually routes on. Those two channel
+    NAMES survive as the keys of upstream_access_config below -- that is the
+    routing contract, and only the tag values are gone.
+
+    The one tag a seller may declare, `feature:func-call`, is deliberately NOT
+    set here. It is a per-model fact and this repo has no per-model signal for
+    it: AionLabs' /v1/models returns id, name, description, date,
+    context_length, max_completion_tokens, is_moderated, architecture and
+    pricing, and nothing about tool support -- there is no field for
+    scripts/update_params.py to capture. Asserting it for the catalog instead
+    would be a guess covering a roleplay finetune (aion-rp-llama-3.1-8b)
+    alongside the Aion models, and a wrong guess is customer-visible: the
+    service advertises tool calling and the shipped example comes back
+    `400 invalid request: tool use is not supported by the provided model`.
+    Under-claiming is recoverable, so these offerings stay untagged until
+    AionLabs exposes the fact per model (or it is verified per model by hand).
+
+    Rendering no key at all is equivalent to an empty list here -- ingest's
+    compose_service_tags replaces the seller-owned half from each upload -- so
+    the legacy tags are cleared on the next upload rather than left behind. #}
 {#- Formats are a service-level fact, identical for every AionLabs model: an
     OpenAI-compatible upstream, exposed in both dialects via the llm_translator
     below (callers may send OpenAI or Anthropic; responses come back in kind).
