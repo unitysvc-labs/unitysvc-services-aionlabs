@@ -4,7 +4,7 @@
     "capabilities": [
       "chat"
     ],
-    "description": "Aion 3.0 Mini is a large language model from AionLabs, available through the UnitySVC gateway.\n\nA multi-model system built on the DeepSeek family of models. Aion 3.0 Mini employs a collaborative generation process in which multiple specialized models contribute to each response. The result is stronger narrative structure, more compelling tension and conflict, and a nuanced treatment of mature and darker themes. It is served OpenAI-compatibly through the UnitySVC gateway, which relays your chat-completion requests to the AionLabs API and meters usage per token (context window 131072 tokens).\n\nCall it in either the OpenAI or Anthropic API style — the gateway auto-detects the dialect and translates as needed. Two channels share one endpoint: `managed` (pay per token using the platform's key, nothing to configure) and `byok` (bring your own AionLabs key and route free). See the code examples and \"How to use this model\" for setup.\n\nPricing — two channels: `managed` bills through UnitySVC at $0.7 / $1.4 per 1M input/output tokens, while `byok` is free through the UnitySVC gateway (your own AionLabs key pays AionLabs directly).",
+    "description": "Aion 3.0 Mini is a large language model from AionLabs, available through the UnitySVC gateway.\n\nA multi-model system built on the DeepSeek family of models. Aion 3.0 Mini employs a collaborative generation process in which multiple specialized models contribute to each response. The result is stronger narrative structure, more compelling tension and conflict, and a nuanced treatment of mature and darker themes. It is served OpenAI-compatibly through the UnitySVC gateway, which relays your chat-completion requests to the AionLabs API and meters usage per token (context window 131072 tokens).\n\nCall it in either the OpenAI or Anthropic API style — the gateway auto-detects the dialect and translates as needed. Two channels share one endpoint: `managed` (pay per token using the platform's key, nothing to configure) and `byok` (bring your own AionLabs key and route free). See the code examples and \"How to use this model\" for setup.\n\nPricing — two channels: `managed` bills through UnitySVC at $0.8050 / $1.6100 per 1M input/output tokens, while `byok` is free through the UnitySVC gateway (your own AionLabs key pays AionLabs directly).",
     "details": {
       "context_length": 131072,
       "max_completion_tokens": 32768,
@@ -16,9 +16,9 @@
     "display_name": "Aion 3.0 Mini",
     "env_api_key_name": "AIONLABS_API_KEY",
     "list_price": {
-      "description": "$0.805/$1.61 / 1M input/output tokens",
-      "input": "0.805",
-      "output": "1.61",
+      "description": "$0.8050/$1.6100 / 1M input/output tokens",
+      "input": "0.8050",
+      "output": "1.6100",
       "type": "one_million_tokens"
     },
     "offering_name": "aion-3.0-mini",
@@ -31,8 +31,8 @@
         },
         "managed": {
           "description": "Upstream AionLabs rate",
-          "input": "0.7",
-          "output": "1.4",
+          "input": "0.7000",
+          "output": "1.4000",
           "type": "one_million_tokens"
         }
       },
