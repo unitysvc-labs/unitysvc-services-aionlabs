@@ -46,12 +46,6 @@ PLATFORM_MARKUP = Decimal("1.15")
 # drops trailing zeros, so a rate that needs no third decimal never shows one.
 PRICE_PLACES = Decimal("0.001")
 
-# Provider-wide rate limits (AionLabs applies these per account).
-RATE_LIMITS = [
-    {"description": "API request rate limit", "limit": 15, "unit": "requests", "window": "minute"},
-    {"description": "Token consumption rate limit", "limit": 50000, "unit": "tokens", "window": "minute"},
-]
-
 # Standard "how to use" paragraph — identical for every model (both channels
 # share one endpoint; the llm_translator serves both API dialects).
 _HOWTO = (
@@ -197,7 +191,6 @@ def iter_models(api_key: str) -> Iterator[dict]:
                     ),
                 },
             },
-            "rate_limits": RATE_LIMITS,
             # Listing / channel fields
             "list_price": list_price,
             "provider_display_name": PROVIDER_DISPLAY_NAME,
