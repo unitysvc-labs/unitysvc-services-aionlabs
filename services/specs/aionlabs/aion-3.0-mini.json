@@ -40,20 +40,6 @@
       "type": "channel"
     },
     "provider_display_name": "AionLabs",
-    "rate_limits": [
-      {
-        "description": "API request rate limit",
-        "limit": 15,
-        "unit": "requests",
-        "window": "minute"
-      },
-      {
-        "description": "Token consumption rate limit",
-        "limit": 50000,
-        "unit": "tokens",
-        "window": "minute"
-      }
-    ],
     "service_type": "llm",
     "status": "ready"
   }
